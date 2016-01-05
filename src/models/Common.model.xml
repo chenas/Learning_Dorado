@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="SlCompany">
+    <Property name="matchType">com.sfit.as.entity.SlCompany</Property>
+    <PropertyDef name="companyId">
+      <Property name="dataType">int</Property>
+      <Property name="visible">false</Property>
+    </PropertyDef>
+    <PropertyDef name="companyName">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="fullName">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="web">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="address">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="postcode">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="phone">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="email">
+      <Property></Property>
+      <Property name="label">邮箱</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="SlDept">
+    <Property name="matchType">com.sfit.as.entity.SlDept</Property>
+    <PropertyDef name="deptId">
+      <Property name="dataType">int</Property>
+    </PropertyDef>
+    <PropertyDef name="deptName">
+      <Property></Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="SlEmployee">
+    <Property name="matchType">com.sfit.as.entity.SlEmployee</Property>
+    <PropertyDef name="employeeId">
+      <Property name="dataType">int</Property>
+    </PropertyDef>
+    <PropertyDef name="employeeCode">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="userName">
+      <Property/>
+      <Property name="label">用户名</Property>
+    </PropertyDef>
+    <PropertyDef name="employeeName">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="sex">
+      <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="birthday">
+      <Property name="dataType">Date</Property>
+    </PropertyDef>
+    <PropertyDef name="married">
+      <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="salary">
+      <Property name="dataType">BigDecimal</Property>
+    </PropertyDef>
+    <PropertyDef name="degree">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="email">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="web">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="cmnt">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="image">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="password">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="animal">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="phone">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="mobile">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="position">
+      <Property/>
+    </PropertyDef>
+  </DataType>
+</Model>
