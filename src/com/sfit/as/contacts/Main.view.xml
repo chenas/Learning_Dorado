@@ -42,7 +42,8 @@ view.get(&quot;^logout&quot;).addListener(&quot;onClick&quot;, function(self, ar
           <Property name="caption">企业联系方式</Property>
         </MenuItem>
         <MenuItem>
-          <ClientEvent name="onClick">location.href=&quot;http://localhost:8080/HelloWorld/com.sfit.as.contacts.EmployeeManage.d&quot;</ClientEvent>
+          <ClientEvent name="onClick" signature="self,arg,iframeMain">iframeMain.set(&quot;path&quot;, &quot;com.sfit.as.contacts.EmployeeManage.d&quot;);&#xD;
+</ClientEvent>
           <Property name="caption">所有联系人</Property>
         </MenuItem>
       </MenuButton>
@@ -55,11 +56,17 @@ view.get(&quot;^logout&quot;).addListener(&quot;onClick&quot;, function(self, ar
           <Property name="caption">员工基础数据维护</Property>
         </MenuItem>
       </MenuButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick" signature="self,arg,iframeMain">iframeMain.set(&quot;path&quot;, &quot;com.sfit.as.contacts.AllMessage.d&quot;);&#xD;
+</ClientEvent>
+        <Property name="caption">所有消息</Property>
+      </ToolBarButton>
       <Fill/>
       <ToolBarLabel>
         <Property name="text">欢迎您！</Property>
       </ToolBarLabel>
       <ToolBarButton>
+        <ClientEvent name="onClick" signature="self,arg,iframeMain">iframeMain.set(&quot;path&quot;,&quot;com.sfit.as.contacts.person.MyInfo.d&quot;);</ClientEvent>
         <Property name="caption">${session.getAttribute('user').employeeName}</Property>
         <Property name="icon">url(>skin>common/icons.gif) -140px -100px</Property>
       </ToolBarButton>

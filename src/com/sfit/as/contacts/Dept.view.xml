@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="SlDept" parent="global:SlDept">
+      <PropertyDef name="deptId">
+        <Property name="dataType">int</Property>
+      </PropertyDef>
+      <PropertyDef name="deptName">
+        <Property/>
+      </PropertyDef>
+      <Reference name="slDeptSet">
+        <Property name="dataType">[SELF]</Property>
+        <Property name="dataProvider">deptService#getDeptByParentId</Property>
+        <Property name="parameter">$${this.deptId}</Property>
+      </Reference>
+    </DataType>
+  </Model>
+  <View>
+    <DataSet id="datasetDept">
+      <Property name="dataType">[SlDept]</Property>
+      <Property name="dataProvider">deptService#getTopDept</Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="position">300</Property>
+      <MainControl>
+        <Container>
+          <Container layout="hbox">
+            <Button id="buttonAdd">
+              <Property name="caption">增加同级节点</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+            </Button>
+            <Button id="buttonAddChild">
+              <Property name="caption">添加下级节点</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+            </Button>
+            <Button id="buttonDel">
+              <Property name="caption">删除当前节点</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -140px -0px</Property>
+            </Button>
+            <Button id="buttonSave">
+              <Property name="caption">保存</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -160px -20px</Property>
+            </Button>
+          </Container>
+          <FieldSet>
+            <Property name="caption">部门信息</Property>
+            <Property name="height">200</Property>
+            <Buttons/>
+            <Children>
+              <AutoForm id="autoformDept">
+                <Property name="dataSet">datasetDept</Property>
+                <Property name="dataPath">!CURRENT_DEPT</Property>
+                <Property name="labelSeparator">：</Property>
+                <AutoFormElement>
+                  <Property name="name">deptId</Property>
+                  <Property name="property">deptId</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">deptName</Property>
+                  <Property name="property">deptName</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+          </FieldSet>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <DataTree id="datatreeDept">
+          <ClientEvent name="onContextMenu" signature="self,arg,menuOpr">&#xD;
+menuOpr.show({&#xD;
+     position:{&#xD;
+         left:arg.event.pageX,&#xD;
+         top:arg.event.pageY&#xD;
+     }&#xD;
+});</ClientEvent>
+          <Property name="dataSet">datasetDept</Property>
+          <Property name="currentNodeDataPath">CURRENT_DEPT</Property>
+          <BindingConfigs>
+            <BindingConfig>
+              <Property name="labelProperty">deptName</Property>
+              <Property name="name">dept</Property>
+              <Property name="childrenProperty">slDeptSet</Property>
+              <Property name="recursive">true</Property>
+            </BindingConfig>
+          </BindingConfigs>
+        </DataTree>
+      </SideControl>
+    </SplitPanel>
+    <Menu id="menuOpr">
+      <MenuItem>
+        <Property name="name">menuitemAdd</Property>
+      </MenuItem>
+      <MenuItem>
+        <Property name="name">menuitemAddChild</Property>
+      </MenuItem>
+      <MenuItem>
+        <Property name="name">menuitemDel</Property>
+      </MenuItem>
+    </Menu>
+    <UpdateAction id="updateactionSave">
+      <UpdateItem/>
+    </UpdateAction>
+  </View>
+</ViewConfig>

@@ -1,6 +1,7 @@
 package com.sfit.as.service;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -89,6 +90,18 @@ public class EmployeeService {
 			slEmployeeDao.find(page, " from SlEmployee where 1=1 " + whereCase);
 		} else
 			slEmployeeDao.getAll(page);
+	}
+	
+	@DataProvider
+	public Collection<SlEmployee> getEmployeeByUserName(String name){
+		Map param = new HashMap();
+		if (StringHelper.isNotEmpty(name)){
+			param.put("userName", name);
+			return slEmployeeDao.find("from SlEmployee where userName = :userName", param);
+		}
+		else{
+			return null;
+		}
 	}
 	
     @DataResolver

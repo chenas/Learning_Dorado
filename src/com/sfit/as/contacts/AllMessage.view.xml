@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="SlEmployee" parent="global:SlEmployee">
+      <PropertyDef name="employeeCode">
+        <Property></Property>
+        <Property name="label">员工编号</Property>
+      </PropertyDef>
+      <PropertyDef name="userName">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="employeeName">
+        <Property></Property>
+        <Property name="label">姓名</Property>
+      </PropertyDef>
+      <PropertyDef name="email">
+        <Property></Property>
+        <Property name="label">邮箱</Property>
+      </PropertyDef>
+      <PropertyDef name="phone">
+        <Property></Property>
+        <Property name="label">固话</Property>
+      </PropertyDef>
+      <PropertyDef name="mobile">
+        <Property></Property>
+        <Property name="label">手机</Property>
+      </PropertyDef>
+      <Reference name="slMessageSet">
+        <Property name="dataType">[SlMessage]</Property>
+        <Property name="dataProvider">messageService#getMessageByEmployeeId</Property>
+        <Property name="pageSize">15</Property>
+        <Property name="parameter">$${this.employeeId}</Property>
+      </Reference>
+    </DataType>
+    <DataType name="SlMessage" parent="global:SlMessage">
+      <PropertyDef name="receiver">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="receiverMail">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="sendDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="content">
+        <Property></Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <DataSet id="datasetEmployee">
+      <Property name="dataType">[SlEmployee]</Property>
+      <Property name="dataProvider">employeeService#getAllForPage</Property>
+      <Property name="pageSize">15</Property>
+    </DataSet>
+    <ToolBar>
+      <DataPilot id="datapilotEmployee">
+        <Property name="dataSet">datasetEmployee</Property>
+        <Property name="itemCodes">pages,pageSize</Property>
+      </DataPilot>
+      <ToolBarButton id="buttonSave">
+        <Property name="caption">保存</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -160px -20px	</Property>
+        <Property name="action">updateactionSave</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="datagridEmployee" layoutConstraint="padding:5">
+      <Property name="dataSet">datasetEmployee</Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="readOnly">true</Property>
+      <DataColumn name="employeeCode">
+        <Property name="property">employeeCode</Property>
+      </DataColumn>
+      <DataColumn name="employeeName">
+        <Property name="property">employeeName</Property>
+      </DataColumn>
+      <DataColumn name="email">
+        <Property name="property">email</Property>
+      </DataColumn>
+      <DataColumn name="phone">
+        <Property name="property">phone</Property>
+      </DataColumn>
+      <DataColumn name="mobile">
+        <Property name="property">mobile</Property>
+      </DataColumn>
+    </DataGrid>
+    <ToolBar>
+      <DataPilot id="datapilotMessage">
+        <Property name="dataSet">datasetEmployee</Property>
+        <Property name="dataPath">#.slMessageSet</Property>
+        <Property name="itemCodes">+,-,x</Property>
+      </DataPilot>
+    </ToolBar>
+    <DataGrid id="datagridMessage">
+      <Property name="dataSet">datasetEmployee</Property>
+      <Property name="dataPath">#.slMessageSet</Property>
+      <DataColumn name="receiver">
+        <Property name="property">receiver</Property>
+      </DataColumn>
+      <DataColumn name="receiverMail">
+        <Property name="property">receiverMail</Property>
+      </DataColumn>
+      <DataColumn name="sendDate">
+        <Property name="property">sendDate</Property>
+      </DataColumn>
+      <DataColumn name="content">
+        <Property name="property">content</Property>
+      </DataColumn>
+    </DataGrid>
+    <UpdateAction id="updateactionSave">
+      <Property name="hotkey">ctrl+s</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="successMessage">保存成功</Property>
+      <Property name="dataResolver">messageService#saveAll</Property>
+      <UpdateItem>
+        <Property name="dataSet">datasetEmployee</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>
