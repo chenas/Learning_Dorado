@@ -6,18 +6,74 @@
     <DataType name="SlDept" parent="global:SlDept">
       <PropertyDef name="deptId">
         <Property name="dataType">int</Property>
+        <Property name="readOnly">true</Property>
       </PropertyDef>
       <PropertyDef name="deptName">
-        <Property/>
+        <Property></Property>
       </PropertyDef>
       <Reference name="slDeptSet">
         <Property name="dataType">[SELF]</Property>
         <Property name="dataProvider">deptService#getDeptByParentId</Property>
         <Property name="parameter">$${this.deptId}</Property>
       </Reference>
+      <Reference name="slEmployeeSet">
+        <Property name="dataType">[slEmployee]</Property>
+        <Property name="dataProvider">deptService#getEmployeeByDeptId</Property>
+        <Property name="pageSize">5</Property>
+        <Property name="parameter">$${this.deptId}</Property>
+      </Reference>
+    </DataType>
+    <DataType name="slEmployee" parent="SlEmployee">
+      <PropertyDef name="employeeCode">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="employeeName">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="email">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="phone">
+        <Property/>
+      </PropertyDef>
+      <PropertyDef name="mobile">
+        <Property/>
+      </PropertyDef>
     </DataType>
   </Model>
   <View>
+    <ClientEvent name="onReady">view.get(&quot;^add&quot;).addListener(&quot;onClick&quot;, function(self,arg,datatreeDept){&#xD;
+    var currentNode = datatreeDept.get(&quot;currentNode&quot;);&#xD;
+    if (!currentNode) {&#xD;
+        throw new dorado.Exception(&quot;请先点中一个树节点！&quot;);&#xD;
+    }&#xD;
+     &#xD;
+    var currentEntity = currentNode.get(&quot;data&quot;);&#xD;
+    currentEntity.createBrother({&#xD;
+        deptName : &quot;&lt;部门名称>&quot;&#xD;
+    });&#xD;
+});&#xD;
+view.get(&quot;^addChild&quot;).addListener(&quot;onClick&quot;, function(self,arg,datatreeDept){&#xD;
+    var currentNode = datatreeDept.get(&quot;currentNode&quot;);&#xD;
+    if (!currentNode) {&#xD;
+        throw new dorado.Exception(&quot;请先点中一个树节点！&quot;);&#xD;
+    }&#xD;
+     &#xD;
+    var currentEntity = currentNode.get(&quot;data&quot;);&#xD;
+    currentNode.expandAsync(function() {&#xD;
+        currentEntity.createChild(&quot;slDeptSet&quot;, {&#xD;
+            deptName : &quot;&lt;部门名称>&quot;&#xD;
+        });&#xD;
+    });&#xD;
+});&#xD;
+view.get(&quot;^del&quot;).addListener(&quot;onClick&quot;, function(self,arg,datatreeDept,updateactionSave){&#xD;
+    var currentEntity = datatreeDept.get(&quot;currentEntity&quot;);&#xD;
+    if (!currentEntity) {&#xD;
+        throw new dorado.Exception(&quot;请先点中一个树节点！&quot;);&#xD;
+    }&#xD;
+    currentEntity.remove();&#xD;
+    updateactionSave.execute();&#xD;
+});</ClientEvent>
     <DataSet id="datasetDept">
       <Property name="dataType">[SlDept]</Property>
       <Property name="dataProvider">deptService#getTopDept</Property>
@@ -30,18 +86,22 @@
             <Button id="buttonAdd">
               <Property name="caption">增加同级节点</Property>
               <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+              <Property name="tags">add</Property>
             </Button>
             <Button id="buttonAddChild">
               <Property name="caption">添加下级节点</Property>
               <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+              <Property name="tags">addChild</Property>
             </Button>
             <Button id="buttonDel">
               <Property name="caption">删除当前节点</Property>
               <Property name="icon">url(>skin>common/icons.gif) -140px -0px</Property>
+              <Property name="tags">del</Property>
             </Button>
             <Button id="buttonSave">
               <Property name="caption">保存</Property>
               <Property name="icon">url(>skin>common/icons.gif) -160px -20px</Property>
+              <Property name="action">updateactionSave</Property>
             </Button>
           </Container>
           <FieldSet>
@@ -56,6 +116,7 @@
                 <AutoFormElement>
                   <Property name="name">deptId</Property>
                   <Property name="property">deptId</Property>
+                  <Property name="readOnly">false</Property>
                   <Editor/>
                 </AutoFormElement>
                 <AutoFormElement>
@@ -66,6 +127,29 @@
               </AutoForm>
             </Children>
           </FieldSet>
+          <DataPilot id="datapilotEmployee">
+            <Property name="dataSet">datasetDept</Property>
+            <Property name="dataPath">!CURRENT_DEPT.slEmployeeSet</Property>
+          </DataPilot>
+          <DataGrid id="datagridEmployee">
+            <Property name="dataSet">datasetDept</Property>
+            <Property name="dataPath">!CURRENT_DEPT.slEmployeeSet</Property>
+            <DataColumn name="employeeCode">
+              <Property name="property">employeeCode</Property>
+            </DataColumn>
+            <DataColumn name="employeeName">
+              <Property name="property">employeeName</Property>
+            </DataColumn>
+            <DataColumn name="email">
+              <Property name="property">email</Property>
+            </DataColumn>
+            <DataColumn name="phone">
+              <Property name="property">phone</Property>
+            </DataColumn>
+            <DataColumn name="mobile">
+              <Property name="property">mobile</Property>
+            </DataColumn>
+          </DataGrid>
         </Container>
       </MainControl>
       <SideControl>
@@ -93,16 +177,28 @@ menuOpr.show({&#xD;
     <Menu id="menuOpr">
       <MenuItem>
         <Property name="name">menuitemAdd</Property>
+        <Property name="tags">add</Property>
+        <Property name="caption">添加同级节点</Property>
       </MenuItem>
       <MenuItem>
         <Property name="name">menuitemAddChild</Property>
+        <Property name="tags">addChild</Property>
+        <Property name="caption">添加下一级节点</Property>
       </MenuItem>
       <MenuItem>
         <Property name="name">menuitemDel</Property>
+        <Property name="tags">del</Property>
+        <Property name="caption">删除当前节点</Property>
       </MenuItem>
     </Menu>
     <UpdateAction id="updateactionSave">
-      <UpdateItem/>
+      <Property name="dataResolver">deptService#saveAll</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="successMessage">保存成功</Property>
+      <Property name="hotkey">ctrl+s</Property>
+      <UpdateItem>
+        <Property name="dataSet">datasetDept</Property>
+      </UpdateItem>
     </UpdateAction>
   </View>
 </ViewConfig>

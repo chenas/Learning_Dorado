@@ -50,6 +50,8 @@ view.get(&quot;^logout&quot;).addListener(&quot;onClick&quot;, function(self, ar
       <MenuButton>
         <Property name="caption">基础数据维护</Property>
         <MenuItem>
+          <ClientEvent name="onClick" signature="self,arg,iframeMain">iframeMain.set(&quot;path&quot;, &quot;com.sfit.as.contacts.Dept.d&quot;)&#xD;
+</ClientEvent>
           <Property name="caption">企业基础数据维护</Property>
         </MenuItem>
         <MenuItem>
